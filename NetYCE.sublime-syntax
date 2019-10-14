@@ -4,6 +4,7 @@ name: NetYCE
 comment: NetYCE Templates and Scenarios
 file_extensions: [tpl, scn]
 scope: source.netyce
+# tag 0.1
 
 # See https://www.sublimetext.com/docs/3/syntax.html
 # Scopes https://www.sublimetext.com/docs/3/scope_naming.html
