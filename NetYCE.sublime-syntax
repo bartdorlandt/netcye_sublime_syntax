@@ -1,0 +1,303 @@
+%YAML 1.2
+---
+name: NetYCE
+comment: NetYCE Templates and Scenarios
+file_extensions: [tpl, scn]
+scope: source.netyce
+
+# See https://www.sublimetext.com/docs/3/syntax.html
+# Scopes https://www.sublimetext.com/docs/3/scope_naming.html
+# regex engine: https://raw.githubusercontent.com/kkos/oniguruma/5.9.6/doc/RE
+
+# colors:
+# grey: comments
+  # comment.line.netyce
+  # comment.line
+# light blue special comment, function, filter
+  # variable.function.netyce
+# red: { | = } < >
+  # keyword.control.netyce
+  # keyword.operator
+  # constant.numeric
+# purple: , : @ -character in scn_function
+  # constant.character.escape.netyce
+  # constant.other.placeholder
+  # constant.numeric
+# orange:  variable
+  # variable.parameter
+# yellow:  string
+  # string.quoted.double.netyce
+  # string.quoted.single.netyce
+# green:  relation
+  # entity.name.interface
+  # entity.name.type
+
+contexts:
+  # The prototype context is prepended to all contexts but those setting
+  # meta_include_prototype: false.
+  prototype:
+    - include: specialcomments
+
+  main:
+    # The main context is the initial starting point of our syntax.
+    # Include other contexts from here (or specify them directly).
+    - include: comments
+    - include: keywords
+    - include: single_quote
+    - include: double_quote
+    - include: pipes
+    - include: scenario
+    - include: cont_scn_params
+    - include: variable
+    - include: square_brackets
+    - include: curly_brackets
+    - include: round_brackets
+
+  comments:
+    # Comments begin with a '#', '--' or '!' and finish
+    # at the end of the line.
+    # or behind pipes
+
+    # - match: '\s*(#|--|!)+(\s*.+|$)'
+    - match: '\s*(#+|--|(![^=])+)(\s*.+|$)'
+    # - match: '\s*(#|--|!|([^!][^=]))+(\s*.+|$)'
+      scope: punctuation.definition.comment.netyce
+      push:
+       # This is an anonymous context push for brevity.
+        - meta_scope: comment.line.netyce
+        - match: $\n?
+          pop: true
+
+  keywords:
+    # Scenario commands
+    # (case insensitive = (?i) in the line. Not used to force lowercase usage)
+    - match: (?i)^\s*\b(if|if not|endif|else|foreach|endeach|end|next|last|description)\b
+      scope: keyword.control.netyce
+    - match: (?i)=\s*\b(keys|reverse|push|pop|unshift|shift|null)\b
+      captures:
+        1: keyword.control.netyce
+    - match: (?i)\b(in)\b
+      captures:
+        1: keyword.control.netyce
+    - match: (?i)\s*\b(task)\s*=\s*(\w+)\b
+      captures:
+        1: keyword.control.netyce
+
+  specialcomments:
+    #- meta_scope: keyword.control.netyce
+    # these are treated differently than a regular comment '#' line
+    # functions in templates
+    - match: (?i)^#(reload|use|load|wait)\s+(\w+(\s+\w+)*)*
+      captures:
+        1: variable.function.netyce
+        2: keyword.control.netyce
+
+  double_quote:
+    # Strings begin and end with quotes, and use backslashes as an escape
+    # character.
+    - match: '"'
+      scope: punctuation.definition.string.begin.netyce
+      push: inside_string_double
+
+  inside_string_double:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.double.netyce
+    #- match: '\.'
+    #  scope: constant.character.escape.netyce
+    - match: '"'
+      scope: punctuation.definition.string.end.netyce
+      pop: true
+
+  single_quote:
+    # Strings begin and end with quotes, and use backslashes as an escape
+    # character.
+    - match: "'"
+      scope: punctuation.definition.string.begin.netyce
+      push: inside_string_single
+
+  inside_string_single:
+    - meta_include_prototype: false
+    - meta_scope: string.quoted.single.netyce
+    #- match: '\.'
+    #  scope: constant.character.escape.netyce
+    - match: "'"
+      scope: punctuation.definition.string.end.netyce
+      pop: true
+
+  pipes:
+    - match: \|
+      push: inside_pipe
+
+  inside_pipe:
+    - meta_scope: keyword.operator.netyce
+    - include: variable
+    #- include: single_quote
+    #- include: double_quote
+    - include: scenario
+    - include: square_brackets
+    #- match: \!=
+    #  scope: keyword.operator.netyce
+    # Needed within |'s ,  |<UNI_PROTOCOL> = Static|
+    #- match: \s*([\!=]+)\s*(\'?\w+\'?)
+    - match: \s*(\!?=+)+\s*(\'?\w+\'?)
+      captures:
+        1: keyword.operator.netyce
+        2: variable.parameter
+    - match: \|
+      pop: true
+
+  scenario:
+    # match all scenario commands
+    - match: (?i)\s*\b(cmd_(exec|exec_basic)|config_(create|startup|save|diff|restore)|parse_(cmd|run|nccm)|reboot_node|clear_console|file_(get|put)|os_(inventory|update|activate|strict|finish)|dns_(add_host|clear_host|add_alias|clear_alias|clear_ip)|trap_(nms|node)|relation|grep|sort|match|pingable|reachable|hangup|wait|update_rev|db_(query|update)|log|log_action|send_email|stop (on-error|default)|stop|EOT|signal_(lumos|dataminer)|concat|st_exec|split)\b\s
+      push: scn_function
+
+  scn_function:
+    # special section with begin and end recognition
+    - meta_scope: variable.function
+    - include: variable
+    - include: single_quote
+    - include: double_quote
+    #- match: \.
+    #  scope: constant.character.escape.netyce
+    - match: <<EOT
+      scope: variable.function
+    # matching single character arguments, like -f, -n followed
+    # by a word or filename
+    - match: (-\w)\s+(\w*\.*\w*)*
+      captures:
+        1: constant.character.escape.netyce
+        2: variable.parameter
+    - match: \.\w+
+      scope: variable.parameter
+    # match end of line
+    - match: "$\n?"
+      pop: true
+
+  cont_scn_params:
+    # Parameter per line support
+    # Start with a potential whitespace followed by a '-' with a character.
+
+    - match: (-\w)\s+(\w*\.*\w*)*
+      captures:
+        1: constant.character.escape.netyce
+        2: variable.parameter
+
+  variable:
+    # opening with ending character. Using the push functionality.
+    - match: "<"
+      push: inside_variable
+
+  inside_variable:
+    - meta_scope: keyword.operator.netyce
+    - include: single_quote
+    - include: double_quote
+    - include: variable
+    - match: '>'
+      pop: true
+    # Match EOT to end the 'here' documents
+    - match: EOT
+      pop: true
+    # filter and search combination with = or !=
+    # <variable@relation:filter=search>
+    # <variable@relation:filter='search'>
+    # <variable@relation:filter=<var@rel>>
+    - match: (\w+)\s*!?=\s*(\w+)*
+      captures:
+        1: variable.function.netyce
+        #2: keyword.operator.netyce
+        2: string.quoted.single.netyce
+    # where the lazy search is used, without specifying a column
+    # <variable@relation:search>
+    - match: :\b(\w+)\b(?!!?=)
+      captures:
+        #1: variable.function.netyce
+        1: string.quoted.single.netyce
+    # The regular variable, with/without a relation
+    # <variable@relation>
+    - match: (\w+)(@?)(\w*)
+      captures:
+        1: variable.parameter
+        2: constant.other.placeholder
+        3: entity.name.type
+
+  square_brackets:
+    - match: \[
+      scope: keyword.operator.netyce
+      push: inside_square_brackets
+
+  inside_square_brackets:
+    # not using the default includes
+    - meta_include_prototype: false
+    - include: single_quote
+    - include: double_quote
+    - include: variable
+    - include: round_brackets
+    # - meta_scope: keyword.operator.netyce
+    #- meta_scope: variable.function.netyce
+    - match: \]
+      scope: keyword.operator.netyce
+      pop: true
+    #- match: \(
+    #  push: inside_round_brackets
+    - match: \b\w+\b
+      scope: variable.function.netyce
+
+  round_brackets:
+    - match: \(
+      scope: keyword.operator.netyce
+      push: inside_round_brackets
+
+  inside_round_brackets:
+    - meta_scope: keyword.operator.netyce
+    - include: single_quote
+    - include: double_quote
+    - include: variable
+    # matching the @ sign, followed by a word
+    # it could hold a ':' with a word behind it
+    - match: '@(\w+)(:)?(\w+)?'
+      captures:
+        1: entity.name.type
+        2: constant.other.placeholder
+        3: variable.parameter
+    # do more?
+    - match: \w+
+      scope: variable.parameter.netyce
+    - match: ','
+      scope: constant.other.placeholder.netyce
+    - match: \)
+      pop: true
+
+  curly_brackets:
+    - match: \{
+      scope: keyword.operator.netyce
+      push: inside_curly_brackets
+
+  inside_curly_brackets:
+    #- meta_scope: variable.parameter.netyce
+    - meta_include_prototype: false
+    - include: variable
+    - include: single_quote
+    - include: double_quote
+    # match all filter=search posibilities or !=
+    # search can be quoted
+    # spaces could be used
+    - match: '\s*(,)\s*\b(\w+)\b\s*(!?=)\s*(\w+)*'
+      captures:
+        1: constant.other.placeholder.netyce
+        2: variable.function.netyce
+        3: keyword.operator.netyce
+        4: string.quoted.single.netyce
+    # matching the relation part
+    # {word, relation}
+    - match: '\s*(,)\s*\b(\w+)\b\s*'
+      captures:
+        1: constant.other.placeholder.netyce
+        2: entity.name.type
+    # focus on the single templatename
+    # {template}
+    - match: \b\w+\b
+      scope: variable.parameter.netyce
+    - match: \}
+      scope: keyword.operator.netyce
+      pop: true
+
