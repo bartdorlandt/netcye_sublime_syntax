@@ -1,0 +1,11 @@
+# TMP files
+*~
+*.bak
+*.swp
+
+# python
+*.pyc
+
+# sublimetext
+package-metadata.json
+
