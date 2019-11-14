@@ -49,6 +49,9 @@ description text <var> more text
 # text in quotes
 "Something"
 'Something'
+"some <var@rel:filter=aap> some"
+"some <var@rel:filter> some"
+'some <var@rel:filter=aap> some'
 
 # Scenario:
 cmd_exec -a flag1 -b flag.cmd 

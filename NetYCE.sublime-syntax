@@ -103,8 +103,7 @@ contexts:
   inside_string_double:
     - meta_include_prototype: false
     - meta_scope: string.quoted.double.netyce
-    #- match: '\.'
-    #  scope: constant.character.escape.netyce
+    - include: variable
     - match: '"'
       scope: punctuation.definition.string.end.netyce
       pop: true
@@ -119,8 +118,7 @@ contexts:
   inside_string_single:
     - meta_include_prototype: false
     - meta_scope: string.quoted.single.netyce
-    #- match: '\.'
-    #  scope: constant.character.escape.netyce
+    - include: variable
     - match: "'"
       scope: punctuation.definition.string.end.netyce
       pop: true
