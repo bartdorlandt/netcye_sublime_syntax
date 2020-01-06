@@ -14,14 +14,12 @@ Place the 'NetYCE.sublime-syntax' file in the respective folder:
 
 
 ## Installation via Package Control
-Note: this will be in effect once packagecontrol has merged the [pull request](https://github.com/wbond/package_control_channel/pull/7753).
-Till then, manually action required.
 
   * Install the [Package Control](https://packagecontrol.io/installation) plugin
   * Press `Ctrl+Shift+P` to bring up the Command Palette
   * Select Package Control: Install Package
-  * Type 'NetYCE' to find this package
-  * Select 'NetYCE' to install
+  * Type 'NetYCE syntax highlighting' to find this package
+  * Select 'NetYCE syntax highlighting' to install
 
 ## Usage
 
