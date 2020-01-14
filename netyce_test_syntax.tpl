@@ -4,13 +4,17 @@
 normal text
 
 # Comments, starting with comment sign
-# comment
+### comment
 -- comment
-! comment
+  !!  comment
+  ! comment
+  /// comment
+  // comment
+no ! no comment
+no # no comment
 !
 #
 # <voro> blaat
-
 
 
 # Keywords
@@ -36,6 +40,7 @@ endeach
 <list> := reverse <list>
 <list> := keys <%list>
 task = abc 
+task := abc 
 end
 description text <var> more text
 
@@ -128,6 +133,7 @@ abc <var@rel:search='filter'> abc
 [Count(@ipv6_service_per_vrf:PA)]
 |[Count(@ipv6_service_per_vrf:PA)]|text
 |[Count(@ipv6_service_per_vrf:PA)] != 0 |text
+|[Ipadd([Count(<value@rel>)], value)]| text
 
 # Curly brackets
 # template calls

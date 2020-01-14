@@ -57,11 +57,7 @@ contexts:
   comments:
     # Comments begin with a '#', '--' or '!' and finish
     # at the end of the line.
-    # or behind pipes
-
-    # - match: '\s*(#|--|!)+(\s*.+|$)'
-    - match: '\s*(#+|--|(![^=])+)(\s*.+|$)'
-    # - match: '\s*(#|--|!|([^!][^=]))+(\s*.+|$)'
+    - match: '^\s*(\#|\-\-|\/\/|\!)(\s*.+|$)'
       scope: punctuation.definition.comment.netyce
       push:
        # This is an anonymous context push for brevity.
@@ -72,17 +68,22 @@ contexts:
   keywords:
     # Scenario commands
     # (case insensitive = (?i) in the line. Not used to force lowercase usage)
-    - match: (?i)^\s*\b(if|if not|endif|else|foreach|endeach|end|next|last|description)\b
-      scope: keyword.control.netyce
+    - match: (?i)(foreach\s*<)(\w+)(>\s*in)\b
+      captures:
+        1: keyword.control.netyce
+        2: variable.parameter
+        3: keyword.control.netyce
+    - match: (?i)^\s*\b(if not|if|endif|else|endeach|end|next|last|description)\b
+      # scope: keyword.control.netyce
+      captures:
+        1: keyword.control.netyce
     - match: (?i)=\s*\b(keys|reverse|push|pop|unshift|shift|null)\b
       captures:
         1: keyword.control.netyce
-    - match: (?i)\b(in)\b
+    - match: (?i)\s*\b(task)\s*:?=\s*(\w+)\b
       captures:
         1: keyword.control.netyce
-    - match: (?i)\s*\b(task)\s*=\s*(\w+)\b
-      captures:
-        1: keyword.control.netyce
+        2: entity.name.type
 
   specialcomments:
     #- meta_scope: keyword.control.netyce
@@ -248,6 +249,7 @@ contexts:
 
   inside_round_brackets:
     - meta_scope: keyword.operator.netyce
+    - include: square_brackets
     - include: single_quote
     - include: double_quote
     - include: variable
