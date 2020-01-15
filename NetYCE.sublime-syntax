@@ -4,7 +4,6 @@ name: NetYCE
 comment: NetYCE Templates and Scenarios
 file_extensions: [tpl, scn]
 scope: source.netyce
-# tag 0.1
 
 # See https://www.sublimetext.com/docs/3/syntax.html
 # Scopes https://www.sublimetext.com/docs/3/scope_naming.html
@@ -73,7 +72,11 @@ contexts:
         1: keyword.control.netyce
         2: variable.parameter
         3: keyword.control.netyce
-    - match: (?i)^\s*\b(if not|if|endif|else|endeach|end|next|last|description)\b
+    - match: (?i)^\s*(if not|if|description)
+      captures:
+        1: keyword.control.netyce
+      push: inside_keyword
+    - match: (?i)^\s*\b(endif|else|endeach|end|next|last)\b
       # scope: keyword.control.netyce
       captures:
         1: keyword.control.netyce
@@ -148,27 +151,59 @@ contexts:
 
   scenario:
     # match all scenario commands
-    - match: (?i)\s*\b(cmd_(exec|exec_basic)|config_(create|startup|save|diff|restore)|parse_(cmd|run|nccm)|reboot_node|clear_console|file_(get|put)|os_(inventory|update|activate|strict|finish)|dns_(add_host|clear_host|add_alias|clear_alias|clear_ip)|trap_(nms|node)|relation|grep|sort|match|pingable|reachable|hangup|wait|update_rev|db_(query|update)|log|log_action|send_email|stop (on-error|default)|stop|EOT|signal_(lumos|dataminer)|concat|st_exec|split)\b\s
+    - match: (?i)\s*\b(cmd_(exec|exec_basic)|config_(create|startup|save|diff|restore)|parse_(cmd|run|nccm)|reboot_node|clear_console|file_(get|put)|os_(inventory|update|activate|strict|finish)|dns_(add_host|clear_host|add_alias|clear_alias|clear_ip)|trap_(nms|node)|relation|grep|sort|match|pingable|reachable|hangup|wait|update_rev|db_(query|update)|log|log_action|send_email|stop (on-error|default)|stop|EOT|signal_(lumos|dataminer)|concat|st_exec|split)\b\s+((-\w)\s+(\w*\.*\w*)*)+
+      captures:
+        1: variable.function
+        13: constant.character.escape.netyce
+        14: variable.parameter
       push: scn_function
 
   scn_function:
     # special section with begin and end recognition
-    - meta_scope: variable.function
-    - include: variable
+    # - meta_scope: variable.function
     - include: single_quote
     - include: double_quote
-    #- match: \.
-    #  scope: constant.character.escape.netyce
-    - match: <<EOT
-      scope: variable.function
+
+    - match: <<EO[TF]
+      scope: keyword.operator
+      push: eot_heredoc
+    - match: "<"
+      push: inside_variable
     # matching single character arguments, like -f, -n followed
     # by a word or filename
-    - match: (-\w)\s+(\w*\.*\w*)*
+    - match: (-\w)\s+(\w*\.?\w*)*
       captures:
         1: constant.character.escape.netyce
         2: variable.parameter
-    - match: \.\w+
-      scope: variable.parameter
+    # - match: \.\w+
+    #   scope: variable.parameter
+    # match end of line
+    - match: "$\n?"
+      pop: true
+
+  eot_heredoc:
+    # special section with begin and end recognition
+    # - meta_scope: variable.function
+    - include: variable
+    - include: single_quote
+    - include: double_quote
+    - include: square_brackets
+    - include: pipes
+    - include: curly_brackets
+    # match end of line
+    - match: \s*EO[TF]\s*$
+      scope: keyword.operator
+      pop: true
+
+  inside_keyword:
+    - include: variable
+    - include: single_quote
+    - include: double_quote
+    - match: (?i)\s+(==|<>|>=|<=|>|<|\!=)\s+
+      captures:
+        1: constant.character.escape.netyce
+    - match: (?i)[\w\.\-]+
+      scope: string.quoted.double.netyce
     # match end of line
     - match: "$\n?"
       pop: true

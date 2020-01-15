@@ -23,7 +23,7 @@ if <error>
 if not <variable>
 if <variable> == abc.com
 if not <variable> == abc.com
-if <variable> != abc.com
+if <variable> != 'abc.com'
 if <variableA> == <variableB>
 endif
 else
@@ -61,10 +61,11 @@ description text <var> more text
 # Scenario:
 cmd_exec -a flag1 -b flag.cmd 
 cmd_exec_basic -f <filename>.cmd 
-cmd_exec -a flag1 -b <<EOT
+cmd_exec -a flag1 -x <var> -b <<EOT
 some_config and stuff
 <var>
 <var@rel>
+[func(@rel:blaat)]
 EOT
 config_create -a flag1 
 config_startup -a flag1 
@@ -111,7 +112,7 @@ stop default -a flag1
 stop -a flag1 
 EOT -a flag1 
 signal_lumos -a flag1 
-signal_dataminer -a flag1 
+signal_dataminer -a flag1 -f blaat.cmd -x fghjk -f
 st_exec -a
 # continous parameters
  -p blaat -r blaat
@@ -151,5 +152,6 @@ abc <var@rel:search='filter'> abc
 |<Ipv6_subnet_name@Ipv46_customs_node_per_vrf:antiddos>|{template, relation}
 |<variable> != 0||<variable@relation> != 0|config line
 |<variable> != 'value'||<variable@relation> != 0| {tempalte, relation}
+|| match blaat
 || ! comment in condition
 |!| # another comment
