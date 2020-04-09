@@ -50,6 +50,7 @@ contexts:
     - include: cont_scn_params
     - include: variable
     - include: square_brackets
+    - include: curly_brackets_non_push
     - include: curly_brackets
     - include: round_brackets
 
@@ -302,6 +303,12 @@ contexts:
       scope: constant.other.placeholder.netyce
     - match: \)
       pop: true
+
+  curly_brackets_non_push:
+    - match: \{\s*$
+      scope: keyword.operator.netyce
+    - match: ^\s*\}
+      scope: keyword.operator.netyce
 
   curly_brackets:
     - match: \{
