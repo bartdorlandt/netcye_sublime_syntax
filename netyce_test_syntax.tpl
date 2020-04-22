@@ -31,6 +31,9 @@ foreach <abc> in <abcs>
 	next
 	last
 	do something
+	stop
+	stop on-error
+	stop default
 endeach
 <list> := push <item>
 <list> := pop <item>
@@ -107,13 +110,14 @@ db_update -a flag1
 log -a flag1 
 log_action -a flag1 
 send_email -a flag1 
-stop on-error -a flag1 
-stop default -a flag1 
-stop -a flag1 
 EOT -a flag1 
 signal_lumos -a flag1 
 signal_dataminer -a flag1 -f blaat.cmd -x fghjk -f
+signal_json -a flag1 
 st_exec -a
+script_exec -a flag1
+ansible_exec -a flag1
+shortest_path -a flag1
 # continous parameters
  -p blaat -r blaat
  -a xyz

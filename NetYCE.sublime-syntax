@@ -77,7 +77,7 @@ contexts:
       captures:
         1: keyword.control.netyce
       push: inside_keyword
-    - match: (?i)^\s*\b(endif|else|endeach|end|next|last)\b
+    - match: (?i)^\s*\b(endif|else|endeach|end|next|last|stop (on-error|default)|stop)\b\s*$
       # scope: keyword.control.netyce
       captures:
         1: keyword.control.netyce
@@ -152,7 +152,7 @@ contexts:
 
   scenario:
     # match all scenario commands
-    - match: (?i)\s*\b(cmd_(exec|exec_basic)|config_(create|startup|save|diff|restore)|parse_(cmd|run|nccm)|reboot_node|clear_console|file_(get|put)|os_(inventory|update|activate|strict|finish)|dns_(add_host|clear_host|add_alias|clear_alias|clear_ip)|trap_(nms|node)|relation|grep|sort|match|pingable|reachable|hangup|wait|update_rev|db_(query|update)|log|log_action|send_email|stop (on-error|default)|stop|EOT|signal_(lumos|dataminer)|concat|st_exec|split)\b\s+((-\w)\s+(\w*\.*\w*)*)+
+    - match: (?i)\s*\b(cmd_(exec|exec_basic)|config_(create|startup|save|diff|restore)|parse_(cmd|run|nccm)|reboot_node|clear_console|file_(get|put)|os_(inventory|update|activate|strict|finish)|dns_(add_host|clear_host|add_alias|clear_alias|clear_ip)|trap_(nms|node)|relation|grep|sort|match|pingable|reachable|hangup|wait|update_rev|db_(query|update)|log|log_action|send_email|shortest_path|EOT|signal_(lumos|dataminer|json)|concat|st_exec|ansible_exec|script_exec|split)\b\s+((-\w)\s+(\w*\.*\w*)*)+
       captures:
         1: variable.function
         13: constant.character.escape.netyce
