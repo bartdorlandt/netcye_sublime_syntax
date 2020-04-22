@@ -93,10 +93,11 @@ contexts:
     #- meta_scope: keyword.control.netyce
     # these are treated differently than a regular comment '#' line
     # functions in templates
-    - match: (?i)^#(reload|use|load|wait)\s+(\w+(\s+\w+)*)*
+    - match: (?i)^(#)(reload|use|load|wait)\s+(\w+(\s+\w+)*)*
       captures:
         1: variable.function.netyce
-        2: keyword.control.netyce
+        2: variable.function.netyce
+        3: keyword.control.netyce
 
   double_quote:
     # Strings begin and end with quotes, and use backslashes as an escape
@@ -152,7 +153,11 @@ contexts:
 
   scenario:
     # match all scenario commands
-    - match: (?i)\s*\b(cmd_(exec|exec_basic)|config_(create|startup|save|diff|restore)|parse_(cmd|run|nccm)|reboot_node|clear_console|file_(get|put)|os_(inventory|update|activate|strict|finish)|dns_(add_host|clear_host|add_alias|clear_alias|clear_ip)|trap_(nms|node)|relation|grep|sort|match|pingable|reachable|hangup|wait|update_rev|db_(query|update)|log|log_action|send_email|shortest_path|EOT|signal_(lumos|dataminer|json)|concat|st_exec|ansible_exec|script_exec|split)\b\s+((-\w)\s+(\w*\.*\w*)*)+
+    - match: "(?i)\\s*\\b(ansible_exec|clear_console|cmd_(exec|exec_basic)|concat|config_(create|startup|save|diff|restore)|\
+        db_(query|update)|dns_(add_host|clear_host|add_alias|clear_alias|clear_ip)|EOT|file_(get|put)|grep|hangup|log|log_action|\
+        match|os_(inventory|update|activate|strict|finish)|parse_(cmd|run|nccm)|pingable|reachable|reboot_node|relation|\
+        resched_job|script_exec|send_email|shortest_path|signal_(lumos|dataminer|json)|sort|split|st_exec|\
+        trap_(nms|node)|update_rev|wait)\\b\\s+((-\\w)\\s+(\\w*\\.*\\w*)*)+"
       captures:
         1: variable.function
         13: constant.character.escape.netyce

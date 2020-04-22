@@ -65,7 +65,7 @@ description text <var> more text
 cmd_exec -a flag1 -b flag.cmd 
 cmd_exec_basic -f <filename>.cmd 
 cmd_exec -a flag1 -x <var> -b <<EOT
-some_config and stuff
+
 <var>
 <var@rel>
 [func(@rel:blaat)]
@@ -118,6 +118,7 @@ st_exec -a
 script_exec -a flag1
 ansible_exec -a flag1
 shortest_path -a flag1
+resched_job -a flag1
 # continous parameters
  -p blaat -r blaat
  -a xyz
