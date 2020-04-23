@@ -160,8 +160,8 @@ contexts:
         trap_(nms|node)|update_rev|wait)\\b\\s+((-\\w)\\s+(\\w*\\.*\\w*)*)+"
       captures:
         1: variable.function
-        13: constant.character.escape.netyce
-        14: variable.parameter
+        12: constant.character.escape.netyce
+        13: variable.parameter
       push: scn_function
 
   scn_function:
