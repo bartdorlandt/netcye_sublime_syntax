@@ -15,6 +15,8 @@ no # no comment
 !
 #
 # <voro> blaat
+# TODO highlighting todo items
+# todo highlighting todo items
 
 
 # Keywords
@@ -70,55 +72,59 @@ cmd_exec -a flag1 -x <var> -b <<EOT
 <var@rel>
 [func(@rel:blaat)]
 EOT
-config_create -a flag1 
-config_startup -a flag1 
-config_save -a flag1 
-config_diff -a flag1 
-config_restore -a flag1 
 <%cmd> = parse_cmd -n <node> -t show_vni -r "show nve vni"
 <vnis> = keys <%cmd>
-parse_run -a flag1 
-parse_nccm -a flag1 
-reboot_node -a flag1 
+ansible_exec -a flag1
 clear_console -a flag1 
-file_get -a flag1 
-file_put -a flag1 
-os_inventory -a flag1 
-os_update -a flag1 
-os_activate -a flag1 
-os_strict -a flag1 
-os_finish -a flag1 
-dns_add_host -a flag1 
-dns_clear_host -a flag1 
-dns_add_alias -a flag1 
-dns_clear_alias -a flag1 
-dns_clear_ip -a flag1 
-trap_nms -a flag1 
-trap_node -a flag1 
-relation -a flag1 
-grep -a flag1 
-sort -a flag1 
-match -a flag1
 concat -s ' ' -l <list>
-pingable -a flag1 
-reachable -a flag1 
-hangup -a flag1 
-wait -a flag1 
-update_rev -a flag1 
+config_create -a flag1 
+config_diff -a flag1 
+config_restore -a flag1 
+config_save -a flag1 
+config_startup -a flag1 
+csv_file -a flag1.abl  
+csv_report -a flag1
 db_query -a flag1 
 db_update -a flag1 
+dns_add_alias -a flag1 
+dns_add_host -a flag1 
+dns_clear_alias -a flag1 
+dns_clear_host -a flag1 
+dns_clear_ip -a flag1 
+EOT -a flag1 
+file_get -a flag1 
+file_put -a flag1 
+grep -a flag1 
+hangup -a flag1 
 log -a flag1 
 log_action -a flag1 
-send_email -a flag1 
-EOT -a flag1 
-signal_lumos -a flag1 
-signal_dataminer -a flag1 -f blaat.cmd -x fghjk -f
-signal_json -a flag1 
-st_exec -a
-script_exec -a flag1
-ansible_exec -a flag1
-shortest_path -a flag1
+lsp_path -a flag1
+match -a flag1
+os_activate -a flag1 
+os_finish -a flag1 
+os_inventory -a flag1 
+os_strict -a flag1 
+os_update -a flag1 
+parse_nccm -a flag1 
+parse_run -a flag1 
+pingable -a flag1 
+reachable -a flag1 
+reboot_node -a flag1 
+relation -a flag1 
 resched_job -a flag1
+script_exec -a flag1
+send_email -a flag1 
+shortest_path -a flag1@blaat.com
+signal_dataminer -a flag1 -f blaat.cmd -x fghjk -f
+signal_netshot -t name
+signal_json -a flag1 
+signal_lumos -a flag1 
+sort -a flag1 
+st_exec -a
+trap_nms -a flag1 
+trap_node -a flag1 
+update_rev -a flag1 
+wait -a flag1 
 # continous parameters
  -p blaat -r blaat
  -a xyz

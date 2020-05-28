@@ -98,6 +98,11 @@ contexts:
         1: variable.function.netyce
         2: variable.function.netyce
         3: keyword.control.netyce
+    - match: '(?i)^\s*(\#)\s*(TODO)([.,!?]?\s.*)$'
+      captures:
+        1: comment.line.netyce
+        2: markup.inserted
+        3: comment.line.netyce
 
   double_quote:
     # Strings begin and end with quotes, and use backslashes as an escape
@@ -154,14 +159,14 @@ contexts:
   scenario:
     # match all scenario commands
     - match: "(?i)\\s*\\b(ansible_exec|clear_console|cmd_(exec|exec_basic)|concat|config_(create|startup|save|diff|restore)|\
-        db_(query|update)|dns_(add_host|clear_host|add_alias|clear_alias|clear_ip)|EOT|file_(get|put)|grep|hangup|log|log_action|\
-        match|os_(inventory|update|activate|strict|finish)|parse_(cmd|run|nccm)|pingable|reachable|reboot_node|relation|\
-        resched_job|script_exec|send_email|shortest_path|signal_(lumos|dataminer|json)|sort|split|st_exec|\
-        trap_(nms|node)|update_rev|wait)\\b\\s+((-\\w)\\s+(\\w*\\.*\\w*)*)+"
+        csv_(file|report)|db_(query|update)|dns_(add_host|clear_host|add_alias|clear_alias|clear_ip)|EOT|file_(get|put)|grep|hangup|log|log_action|\
+        lsp_path|match|os_(inventory|update|activate|strict|finish)|parse_(cmd|run|nccm)|pingable|reachable|reboot_node|relation|\
+        resched_job|script_exec|send_email|shortest_path|signal_(lumos|dataminer|json|netshot)|sort|split|st_exec|\
+        trap_(nms|node)|update_rev|wait)\\b\\s+((-\\w)\\s+([\\w*@\\.]+)*)+"
       captures:
         1: variable.function
-        12: constant.character.escape.netyce
-        13: variable.parameter
+        13: constant.character.escape.netyce
+        14: variable.parameter
       push: scn_function
 
   scn_function:
