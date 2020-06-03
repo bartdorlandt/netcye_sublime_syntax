@@ -158,9 +158,12 @@ contexts:
 
   scenario:
     # match all scenario commands
-    - match: "(?i)\\s*\\b(ansible_exec|clear_console|cmd_(exec|exec_basic)|concat|config_(create|startup|save|diff|restore)|\
-        csv_(file|report)|db_(query|update)|dns_(add_host|clear_host|add_alias|clear_alias|clear_ip)|EOT|file_(get|put)|grep|hangup|log|log_action|\
-        lsp_path|match|os_(inventory|update|activate|strict|finish)|parse_(cmd|run|nccm)|pingable|reachable|reboot_node|relation|\
+    - match: "(?i)\\s*\\b(ansible_exec|calc|clear_console|cmd_(exec|exec_basic)|concat|\
+        config_(create|startup|save|diff|restore)|\
+        csv_(file|report)|db_(query|update)|dns_(add_host|clear_host|add_alias|clear_alias|clear_ip)|\
+        EOT|file_(get|put)|grep|hangup|log|log_action|\
+        lsp_path|match|os_(inventory|update|activate|strict|finish)|parse_(cmd|run|nccm)|\
+        pingable|reachable|reboot_node|relation|replace|\
         resched_job|script_exec|send_email|shortest_path|signal_(lumos|dataminer|json|netshot)|sort|split|st_exec|\
         trap_(nms|node)|update_rev|wait)\\b\\s+((-\\w)\\s+([\\w*@\\.]+)*)+"
       captures:

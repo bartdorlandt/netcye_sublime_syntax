@@ -75,6 +75,7 @@ EOT
 <%cmd> = parse_cmd -n <node> -t show_vni -r "show nve vni"
 <vnis> = keys <%cmd>
 ansible_exec -a flag1
+calc -c flag1
 clear_console -a flag1 
 concat -s ' ' -l <list>
 config_create -a flag1 
@@ -111,6 +112,7 @@ pingable -a flag1
 reachable -a flag1 
 reboot_node -a flag1 
 relation -a flag1 
+replace -a flag1
 resched_job -a flag1
 script_exec -a flag1
 send_email -a flag1 
